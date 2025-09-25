@@ -1,4 +1,4 @@
-nput1 = input('enter a first list: ').split()
+input1 = input('enter a first list: ').split()
 list1=[]
 for num in input1:
     if "." in num:
