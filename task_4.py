@@ -10,7 +10,7 @@ ost=ost%5
 k2=ost//2
 ost=ost%2
 k1 = ost
-print("for ",money,"  you will need: ")
+print(f"for {money}  you will need: ")
 print("100 BYN:",k100)
 print("50 BYN:",k50)
 print("10 BYN:",k10)
