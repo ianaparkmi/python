@@ -1,9 +1,9 @@
 import time
 
 def timing(func):
-    def wrapper():
+    def wrapper(*args, **kwargs):
         start = time.time()
-        result = func()  
+        result = func(*args, **kwargs)  
         end = time.time()
         print(f"Время выполнения: {(end - start) * 1000:.2f} мс")
         return result
