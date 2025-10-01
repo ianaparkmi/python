@@ -8,7 +8,7 @@ def type_check(*types):
                 expected_type = types[i]
                 if not isinstance(arg, expected_type):
                     raise TypeError(f"Аргумент {i} должен быть {expected_type.__name__}, получен {type(arg).__name__}")
-            print(" Все аргументы корректны!")
+            print("Все аргументы корректны!")
             
             return func(*args)
         return wrapper
