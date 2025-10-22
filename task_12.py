@@ -32,4 +32,5 @@ if extra_sms > 0:
     print("Extra SMS:", cost_sms, "rub")
 if extra_internet > 0:
     print("Extra internet:", cost_internet, "rub")
+print(f"Sum all extra: {cost_minutes+cost_sms+cost_internet} rub")
 print("Total:", total, "rub") 
