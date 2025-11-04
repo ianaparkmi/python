@@ -6,7 +6,7 @@ for num in input1:
     else:
         list1.append(int(num))
 
-input2 = input('enter a first list: ').split()
+input2 = input('enter a second list: ').split()
 list2=[]
 for num in input2:
     if "." in num:
