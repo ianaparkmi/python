@@ -1,5 +1,4 @@
 user_list=input("enter elements of list and use a space").split()
-usee_list=[]
 unique_list = []
 seen = []
 for elem in user_list:
