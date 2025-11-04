@@ -10,7 +10,9 @@ def merge (dict_1, dict_2):
             elif isinstance(dict_1[key], tuple) and isinstance(value, tuple):
                 dict_1[key] = dict_1[key] + value
             else:
-                dict[key]=value
+                dict_1[key]=value
+        else:
+            dict_1[key] = value
     return dict_1
 
 dict_1 = {"a": 1, "b": {"c": 1, "f": 4}}
