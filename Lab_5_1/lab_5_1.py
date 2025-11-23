@@ -79,15 +79,17 @@ class CountryParser:
     
     def _parse_capital(self, soup):
         try:
+            capital_labels = ['Capital', 'Capitaland largest city', 'Official capital']
             infobox = soup.find('table', {'class': 'infobox'})
             if infobox:
-                capital_th = infobox.find('th', string=re.compile('Capital', re.I))
-                if capital_th:
-                    capital_td = capital_th.find_next('td')
-                    if capital_td:
-                        capital_link = capital_td.find('a')
-                        if capital_link:
-                            return capital_link.get_text().strip()
+                for label in capital_labels:
+                    capital_th = infobox.find('th', string=re.compile('Capital', re.I))
+                    if capital_th:
+                        capital_td = capital_th.find_next('td')
+                        if capital_td:
+                            capital_link = capital_td.find('a')
+                            if capital_link:
+                                return capital_link.get_text().strip()
             return "Not found"
         except Exception:
             return "Error"
@@ -100,10 +102,12 @@ class CountryParser:
                 if area_th:
                     area_td = area_th.find_next('td')
                     if area_td:
+                        for sup in area_td.find_all('sup'):
+                            sup.decompose()
                         area_text = area_td.get_text()
-                        numbers = re.findall(r'(\d{1,3}(?:,\d{3})*)', area_text)
-                        if numbers:
-                            area = numbers[0].replace(',', '')
+                        area_match = re.search(r'(\d[\d,\.]*)', area_text)
+                        if area_match:
+                            area = re.sub(r'[^\d]', '', area_match.group(1))
                             return area
             return "Not found"
         except Exception:
@@ -113,15 +117,18 @@ class CountryParser:
         try:
             infobox = soup.find('table', {'class': 'infobox'})
             if infobox:
+                pop_labels = ['Population', 'Population estimate', 'Pop.\nestimate']
                 population_th = infobox.find('th', string=re.compile('Population', re.I))
                 if population_th:
                     population_td = population_th.find_next('td')
                     if population_td:
+                        for sup in population_td.find_all('sup'):
+                            sup.decompose()
                         population_text = population_td.get_text()
                         numbers = re.findall(r'(\d{1,3}(?:,\d{3})*)', population_text)
                         if numbers:
-                            population = numbers[-1].replace(',', '')
-                            return population
+                            populations = [int(n.replace(',', '')) for n in numbers]
+                            return str(max(populations))
             return "Not found"
         except Exception:
             return "Error"
