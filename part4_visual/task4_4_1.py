@@ -84,7 +84,6 @@ plt.subplot(1, 2, 2)
 payment_by_sale.plot(kind='bar')
 plt.title('Способы оплаты по типам продаж')
 plt.ylabel('Количество')
-plt.legend(title='Тип продажи')
 plt.tight_layout()
 plt.show()
 
