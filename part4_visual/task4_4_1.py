@@ -18,6 +18,18 @@ print(f"Максимальная выручка: {df['REVENUE_AMOUNT'].max()}")
 #гистогр
 plt.figure(figsize=(10,4))
 plt.hist(df['REVENUE_AMOUNT'],bins=50, alpha=0.7)
+counts, bins, patches = plt.hist(df['REVENUE_AMOUNT'], bins=50, alpha=0.7)
+for count, patch in zip(counts, patches):
+    if count > 0:
+        plt.text(
+            patch.get_x() + patch.get_width() / 2,
+            count,
+            int(count),
+            ha='center',
+            va='bottom',
+            fontsize=7
+        )
+
 plt.title("распределение выручки")
 plt.xlabel('выручка')
 plt.ylabel('Количество')
@@ -30,6 +42,8 @@ print(top_airports)
 #cтолбчатая дгр
 plt.figure(figsize=(12,6))
 top_airports.plot(kind='bar')
+for i, v in enumerate(top_airports.values):
+    plt.text(i, v, v, ha='center', va='bottom')
 plt.title("'Топ-10 аэропортов отправления'")
 plt.ylabel('Количество рейсов')
 plt.show()
@@ -44,6 +58,8 @@ print(monthly_data)
 
 plt.figure(figsize=(10,4))
 monthly_data.plot(kind='line', marker='o')
+for x, y in zip(monthly_data.index, monthly_data.values):
+    plt.text(x, y, y, ha='center', va='bottom')
 plt.title('Сезонность перелетов по месяцам')
 plt.xlabel('Месяц')
 plt.ylabel('Количество перелетов')
@@ -62,28 +78,41 @@ plt.subplot(1, 2, 1)
 pax_stats.plot(kind='pie', autopct='%1.1f%%')
 plt.title('Типы пассажиров')
 plt.figure(figsize=(12, 4))
-plt.subplot(1, 2, 1)
-pax_stats.plot(kind='pie', autopct='%1.1f%%')
-plt.title('Типы пассажиров')
 
 print("\n5. АНАЛИЗ СПОСОБОВ ОПЛАТЫ")
 fop_stats = df['FOP_TYPE_CODE'].value_counts().head(5)
 print("Топ-5 способов оплаты:")
 print(fop_stats)
 
-payment_by_sale = pd.crosstab(df['FOP_TYPE_CODE'], df['SALE_TYPE']).head(5)
+payment_by_sale = pd.crosstab(df['FOP_TYPE_CODE'], df['SALE_TYPE']).head(15)
 print("\nСпособы оплаты по типам продаж:")
 print(payment_by_sale)
 plt.figure(figsize=(12, 4))
 
-plt.subplot(1, 2, 1)
-fop_stats.head(5).plot(kind='bar')
-plt.title('Топ-5 способов оплаты')
-plt.ylabel('Количество')
-plt.subplot(1, 2, 2)
-payment_by_sale.plot(kind='bar')
-plt.title('Способы оплаты по типам продаж')
-plt.ylabel('Количество')
+ax1 = plt.subplot(1, 2, 1)
+fop_stats.head(5).plot(kind='bar', ax=ax1)
+for p in ax1.patches:
+    ax1.annotate(
+        int(p.get_height()),
+        (p.get_x() + p.get_width() / 2, p.get_height()),
+        ha='center',
+        va='bottom'
+    )
+ax1.set_title('Топ-5 способов оплаты')
+ax1.set_ylabel('Количество')
+ax2 = plt.subplot(1, 2, 2)
+payment_by_sale.plot(kind='bar', ax=ax2)
+for p in ax2.patches:
+    if p.get_height() > 0:
+        ax2.annotate(
+            int(p.get_height()),
+            (p.get_x() + p.get_width() / 2, p.get_height()),
+            ha='center',
+            va='bottom',
+            fontsize=8
+        )
+ax2.set_title('Способы оплаты по типам продаж')
+ax2.set_ylabel('Количество')
 plt.tight_layout()
 plt.show()
 
@@ -99,7 +128,11 @@ print("\nТренд по месяцам (выручка и количество)
 print(monthly_trend)
 plt.figure(figsize=(10, 4))
 plt.plot(monthly_trend.index, monthly_trend['REVENUE_AMOUNT'], label='Выручка', marker='o')
+for x, y in zip(monthly_trend.index, monthly_trend['REVENUE_AMOUNT']):
+    plt.text(x, y, f'{int(y)}', ha='center', va='bottom')
 plt.plot(monthly_trend.index, monthly_trend['COUNT']*10, label='Количество (x10)', marker='s')  
+for x, y in zip(monthly_trend.index, monthly_trend['COUNT'] * 10):
+    plt.text(x, y, f'{int(y/10)}', ha='center', va='bottom')
 plt.title('Тренд выручки и количества перелетов по месяцам')
 plt.xlabel('Месяц')
 plt.ylabel('Выручка / Количество')
