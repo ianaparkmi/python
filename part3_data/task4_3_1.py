@@ -60,7 +60,7 @@ def graph():
         subject_data = test_df[test_df['Subject'] == subject]
         plt.plot(subject_data['Year'], subject_data['Average Score'], marker='o', label=subject)
     
-    plt.title('Average Test Scores by Subject (2019-2023)')
+    plt.title('Average Test Scores by Subject (2021-2023)')
     plt.xlabel('Year')
     plt.ylabel('Average Score')
     plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
