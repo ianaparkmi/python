@@ -26,9 +26,21 @@ def generate_student(num_students=50):
     for _ in range(num_students):
         year=random.choice(YEARS)
         specialty=random.choice(SPECIALTIES)
-        ct_scores = {subject: random.randint(0,100) for subject in SUBJECTS}
-        certificate_score=random.randint(4,10)
-        total_score= sum(ct_scores.values()) / len(ct_scores) + certificate_score
+        ct_scores = {}
+        for subject in SUBJECTS:
+            for _ in range(100):
+                if subject in ['Mathematics', 'Physics']:
+                    ct_scores[subject] = random.randint(75, 100)
+                elif subject in ['Medicine', 'Chemistry']:
+                    ct_scores[subject] = random.randint(70, 95)
+                else:
+                    ct_scores[subject] = random.randint(65, 90)
+        certificate_score = random.uniform(7.5, 10.0)
+        sorted_scores = sorted(ct_scores.values(), reverse=True)
+        top_3_scores = sorted_scores[:3]
+        ct_total = sum(top_3_scores)
+        cert_scaled = certificate_score * 10
+        total_score = ct_total + cert_scaled
         student = {
             'Full Name': fake.name(),
             'Admission Year': year,
